@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TagsCloud
 {
-    public class Spiral
+    public class Spiral : ISpiral
     {
         private Point Current { get; set; }
 
@@ -20,17 +20,17 @@ namespace TagsCloud
 
         private bool isFirstRequest { get; set; } = true;
 
-        public Spiral(Point center, int scale = 1)
+        public Spiral(Config config, int scale = 5)
         {
             if (scale < 1)
             {
                 throw new ArgumentException("scale must be positive and more than 1");
             }
-            Current = center;
+            Current = config.Center;
             Directions = new[] { new Point(-1 * scale, 0), new Point(0, scale), new Point(scale, 0), new Point(0, -1 * scale) };
         }
 
-        public void Rotate()
+        private void Rotate()
         {
             DirectionIndex = (DirectionIndex + 1) % Directions.Length;
         }
@@ -47,7 +47,6 @@ namespace TagsCloud
                 PathLength++;
             }
         }
-
 
         public Point GetNextPoint()
         {

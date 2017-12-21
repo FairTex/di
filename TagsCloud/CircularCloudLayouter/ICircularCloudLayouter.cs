@@ -9,6 +9,6 @@ namespace TagsCloud
 {
     public interface ICircularCloudLayouter
     {
-        Dictionary<string, Rectangle> GetRectangles(string[] words);
+        Rectangle PutNextRectangle(Size size);
     }
 }

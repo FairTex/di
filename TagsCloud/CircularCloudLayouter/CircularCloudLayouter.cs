@@ -8,14 +8,13 @@ namespace TagsCloud
     public class CircularCloudLayouter : ICircularCloudLayouter
     {
         private Point Center { get; set; }
-        private Spiral Spiral { get; set; }
+        private ISpiral Spiral { get; set; }
         private List<Rectangle> Rectangles { get; set; }
 
-        public CircularCloudLayouter(int spiralScale = 5)
+        public CircularCloudLayouter(Config config, ISpiral spiral)
         {
-            var center = new Point(1024 / 2, 1024 / 2);
-            Center = center;
-            Spiral = new Spiral(center, spiralScale);
+            Center = config.Center;
+            Spiral = spiral;
             Rectangles = new List<Rectangle>();
         }
 
@@ -99,33 +98,6 @@ namespace TagsCloud
         public Rectangle[] GetRectangles()
         {
             return Rectangles.ToArray();
-        }
-
-        private int maxSize = 80;
-        private int minSize = 20;
-
-        public Dictionary<string, Rectangle> GetRectangles(string[] words)
-        {
-            Dictionary<string, int> wordsFrequencies = CalculateFrequency(words);
-            return wordsFrequencies.ToDictionary(word => word.Key, word =>
-            {
-                var tagSize = (int)((double)word.Value / wordsFrequencies.Values.Max()
-                                    * (maxSize - minSize) + minSize);
-                var rectangleSize = TextRenderer.MeasureText(word.Key,
-                    new Font(new FontFamily("Times New Roman"), tagSize,
-                        FontStyle.Regular, GraphicsUnit.Pixel));
-
-                return PutNextRectangle(rectangleSize);
-            });
-        }
-
-        private Dictionary<string, int> CalculateFrequency(string[] words)
-        {
-            return words
-                .GroupBy(word => word)
-                .OrderByDescending(wordList => wordList.Count())
-                .Take(words.Length)
-                .ToDictionary(word => word.Key, wordList => wordList.Count());
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace TagsCloud
 {
-    class WordHandler : IWordHandler
+    public class SimpleHandler : IHandler
     {
         public string[] Handle(string[] words)
         {
