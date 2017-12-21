@@ -36,12 +36,12 @@ namespace TagsCloud
             }
         }
 
-        public bool DoesIntersect(Rectangle rectangle)
+        private bool DoesIntersect(Rectangle rectangle)
         {
             return Rectangles.Any(r => r.IntersectsWith(rectangle));
         }
 
-        public Rectangle TryShiftToCenter(Rectangle rectangle)
+        private Rectangle TryShiftToCenter(Rectangle rectangle)
         {
             var center = GetCenter(rectangle);
 
