@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="CircularCloudLayouter\CircularCloudLayouter.cs" />
     <Compile Include="CloudCreator\CloudCreator.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Drawer\BrushGenerator.cs" />
     <Compile Include="Drawer\Drawer.cs" />
     <Compile Include="CircularCloudLayouter\ICircularCloudLayouter.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Drawer\IDrawer.cs" />
     <Compile Include="Spiral\ISpiral.cs" />
     <Compile Include="Tests\CircularCloudLayouter_Should.cs" />
+    <Compile Include="Tests\TagMaker_Should.cs" />
     <Compile Include="Tests\WordHandler_Should.cs" />
     <Compile Include="WordHandler\BoringWordsExcluder.cs" />
     <Compile Include="WordHandler\IHandler.cs" />

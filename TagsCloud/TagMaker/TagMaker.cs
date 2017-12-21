@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace TagsCloud.TagMaker
+namespace TagsCloud
 {
     public class TagMaker : ITagMaker
     {

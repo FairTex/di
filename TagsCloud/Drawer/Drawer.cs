@@ -15,7 +15,7 @@ namespace TagsCloud
             this.brushGenerator = brushGenerator;
         }
         
-        public void Draw(Dictionary<string, Rectangle> cloud, string outputFilename)
+        public void Draw(Dictionary<string, Rectangle> cloud)
         {
             var bitmap = new Bitmap(config.ImageSize.Width, config.ImageSize.Height);
             var g = Graphics.FromImage(bitmap);
@@ -26,7 +26,7 @@ namespace TagsCloud
                     tag.Value.Location);
             }
 
-            bitmap.Save(outputFilename, ImageFormat.Jpeg);
+            bitmap.Save(config.OutputFileName, ImageFormat.Jpeg);
         }
     }
 }

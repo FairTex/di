@@ -3,32 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TagsCloud.TagMaker;
 
 namespace TagsCloud
 {
     public class CloudCreator : ICloudCreator
     {
         private IWordReader WordReader;
+        private readonly Config config;
         private IWordHandler WordHandler;
         private IDrawer Drawer;
         private ITagMaker TagMaker;
 
-        public CloudCreator(IWordReader reader, IWordHandler handler, IDrawer drawer, ITagMaker tagMaker)
+        public CloudCreator(Config config, IWordReader reader, IWordHandler handler, IDrawer drawer, ITagMaker tagMaker)
         {
+            this.config = config;
             WordHandler = handler;
             WordReader = reader;
             Drawer = drawer;
             TagMaker = tagMaker;
         }
 
-        public void Create(string inputFilename, string outputFilename)
+        public void Create()
         {
-            var words = WordReader.read(inputFilename);
+            var words = WordReader.read(config.InputFileName);
             var handledWords = WordHandler.Handle(words);
             var rectangles = TagMaker.Make(handledWords);
 
-            Drawer.Draw(rectangles, outputFilename);
+            Drawer.Draw(rectangles);
         }
     }
 }
