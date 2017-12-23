@@ -19,28 +19,25 @@ namespace TagsCloud
             Config = config;
         }
 
-        public Dictionary<string, Rectangle> Make(string[] words)
+        public Dictionary<string, Result<Rectangle>> Make(IEnumerable<string> words)
         {
-            words = words.Take(Config.Count).ToArray();
-            Dictionary<string, int> wordsFrequencies = CalculateFrequency(words);
+            var wordsFrequencies = CalculateFrequency(words);
             return wordsFrequencies.ToDictionary(word => word.Key, word =>
             {
-                var tagSize = (int)((double)word.Value / wordsFrequencies.Values.Max()
-                                    * (maxSize - minSize) + minSize);
-                var rectangleSize = TextRenderer.MeasureText(word.Key,
-                    new Font(new FontFamily(Config.TagFontName), tagSize,
-                        FontStyle.Regular, GraphicsUnit.Pixel));
-
+                var tagSize =
+                    (int) ((double) word.Value / wordsFrequencies.Values.Max() * (maxSize - minSize) + minSize);
+                var font = new Font(Config.FontFamily, tagSize, FontStyle.Regular, GraphicsUnit.Pixel);
+                var rectangleSize = TextRenderer.MeasureText(word.Key, font);
                 return layouter.PutNextRectangle(rectangleSize);
             });
         }
 
-        private Dictionary<string, int> CalculateFrequency(string[] words)
+        private Dictionary<string, int> CalculateFrequency(IEnumerable<string> words)
         {
             return words
                 .GroupBy(word => word)
                 .OrderByDescending(wordList => wordList.Count())
-                .Take(words.Length)
+                .Take(Config.Count)
                 .ToDictionary(word => word.Key, wordList => wordList.Count());
         }
     }

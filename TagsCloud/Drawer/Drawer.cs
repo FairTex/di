@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -15,15 +16,19 @@ namespace TagsCloud
             this.brushGenerator = brushGenerator;
         }
         
-        public void Draw(Dictionary<string, Rectangle> cloud)
+        public void Draw(Dictionary<string, Result<Rectangle>> cloud)
         {
             var bitmap = new Bitmap(config.ImageSize.Width, config.ImageSize.Height);
             var g = Graphics.FromImage(bitmap);
 
             foreach (var tag in cloud)
             {
-                g.DrawString(tag.Key, new Font(config.TagFontName, tag.Value.Height / 2), brushGenerator.GetBrush(),
-                    tag.Value.Location);
+                if (!tag.Value.IsSuccess)
+                {
+                    throw new Exception(tag.Value.Error);
+                }
+                g.DrawString(tag.Key, new Font(config.TagFontName, tag.Value.Value.Height / 2), brushGenerator.GetBrush(),
+                    tag.Value.Value.Location);
             }
 
             bitmap.Save(config.OutputFileName, ImageFormat.Jpeg);

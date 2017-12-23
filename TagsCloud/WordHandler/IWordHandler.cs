@@ -7,6 +7,6 @@ namespace TagsCloud
 {
     public interface IWordHandler
     {
-        string[] Handle(string[] words);
+        IEnumerable<string> Handle(IEnumerable<string> words);
     }
 }

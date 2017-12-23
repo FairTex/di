@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TagsCloud
 {
     public class SimpleHandler : IHandler
     {
-        public string[] Handle(string[] words)
+        public IEnumerable<string> Handle(IEnumerable<string> words)
         {
             return words
                 .Where(word => word.Trim().Length > 0)
-                .Select(word => word.ToLower()).ToArray();
+                .Select(word => word.ToLower());
         }
     }
 }

@@ -7,18 +7,18 @@ namespace TagsCloud
 {
     public class CircularCloudLayouter : ICircularCloudLayouter
     {
-        private Point Center { get; set; }
+        private readonly Config config;
         private ISpiral Spiral { get; set; }
         private List<Rectangle> Rectangles { get; set; }
 
         public CircularCloudLayouter(Config config, ISpiral spiral)
         {
-            Center = config.Center;
+            this.config = config;
             Spiral = spiral;
             Rectangles = new List<Rectangle>();
         }
 
-        public Rectangle PutNextRectangle(Size rectangleSize)
+        public Result<Rectangle> PutNextRectangle(Size rectangleSize)
         {
             while (true)
             {
@@ -29,6 +29,11 @@ namespace TagsCloud
                 {
                     if (Rectangles.Count > 0)
                         rectangle = TryShiftToCenter(rectangle);
+
+                    if (!rectangle.IntersectsWith(config.Canvas))
+                    {
+                        return Result.Fail<Rectangle>("Облако тегов не влезло на изображение данного размера");
+                    }
 
                     Rectangles.Add(rectangle);
                     return rectangle;
@@ -45,7 +50,7 @@ namespace TagsCloud
         {
             var center = GetCenter(rectangle);
 
-            var direction = new Point(-1 * BoolToInt(center.X > Center.X), -1 * BoolToInt(center.Y > Center.Y));
+            var direction = new Point(-1 * BoolToInt(center.X > config.Center.X), -1 * BoolToInt(center.Y > config.Center.Y));
 
             rectangle = ShiftWhilePossible(rectangle, new Point(direction.X, 0));
             rectangle = ShiftWhilePossible(rectangle, new Point(0, direction.Y));
@@ -62,7 +67,6 @@ namespace TagsCloud
             while (true)
             {
                 var newPoint = new Point(r.X + direction.X, r.Y + direction.Y);
-
 
                 var newRectangle = new Rectangle(newPoint, r.Size);
                 if (!DoesIntersect(newRectangle))
@@ -81,7 +85,7 @@ namespace TagsCloud
 
         private bool NearTheCenter(Rectangle r, Point direction)
         {
-            return (r.X == Center.X && direction.Y == 0) || (r.Y == Center.Y && direction.X == 0);
+            return (r.X == config.Center.X && direction.Y == 0) || (r.Y == config.Center.Y && direction.X == 0);
         }
 
         private Point GetCenter(Rectangle rectangle)

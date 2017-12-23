@@ -8,6 +8,6 @@ namespace TagsCloud
 {
     public interface IWordReader
     {
-        string[] read(string filename);
+        Result<IEnumerable<string>> read(string filename);
     }
 }

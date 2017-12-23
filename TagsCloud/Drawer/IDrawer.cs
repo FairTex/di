@@ -9,6 +9,6 @@ namespace TagsCloud
 {
     public interface IDrawer
     {
-        void Draw(Dictionary<string, Rectangle> cloud);
+        void Draw(Dictionary<string, Result<Rectangle>> cloud);
     }
 }

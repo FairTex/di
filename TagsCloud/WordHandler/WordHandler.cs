@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TagsCloud
@@ -12,7 +13,7 @@ namespace TagsCloud
 
         private IHandler[] Handlers { get; }
 
-        public string[] Handle(string[] words)
+        public IEnumerable<string> Handle(IEnumerable<string> words)
         {
             return Handlers.Aggregate(words, (word, handler) => handler.Handle(word));
         }

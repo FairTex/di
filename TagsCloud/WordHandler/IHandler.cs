@@ -1,7 +1,9 @@
-﻿namespace TagsCloud
+﻿using System.Collections.Generic;
+
+namespace TagsCloud
 {
     public interface IHandler
     {
-        string[] Handle(string[] words);
+        IEnumerable<string> Handle(IEnumerable<string> words);
     }
 }

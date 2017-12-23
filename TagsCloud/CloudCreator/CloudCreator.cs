@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +26,13 @@ namespace TagsCloud
 
         public void Create()
         {
-            var words = WordReader.read(config.InputFileName);
-            var handledWords = WordHandler.Handle(words);
+            var result = WordReader.read(config.InputFileName);
+            if (!result.IsSuccess)
+            {
+                throw new FileLoadException(result.Error);
+            }
+
+            var handledWords = WordHandler.Handle(result.Value);
             var rectangles = TagMaker.Make(handledWords);
 
             Drawer.Draw(rectangles);

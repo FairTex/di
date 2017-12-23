@@ -6,20 +6,13 @@ namespace TagsCloud
 {
     public class WordReader : IWordReader
     {
-        public string[] read(string filename)
+        public Result<IEnumerable<string>> read(string filename)
         {
-            var lines = File.ReadAllLines(filename);
-            var words = new List<string>();
-            foreach (var line in lines)
-            {
-                var splittedLine = line
-                    .Split(' ')
-                    .Select(w => w.Trim(new char[] {'"', '.', ','}))
-                    .ToList();
-                words = words.Concat(splittedLine).ToList();
-            }
-
-            return words.ToArray();
+            return Result.Of(() => File.ReadAllLines(filename))
+                .Then(lines => lines
+                    .SelectMany(line => line.Split(' '))
+                    .Select(word => word.Trim('"', '.', ',')))
+                .RefineError("Произошла ошибка при чтении файла");
         }
     }
 }
