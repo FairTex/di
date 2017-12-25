@@ -15,22 +15,17 @@ namespace TagsCloud
                 .SingleInstance();
             var build = container.Build();
             var cloudCreator = build.Resolve<CloudCreator>();
-
-            var result = cloudCreator.Create();
-            if (!result.IsSuccess)
-            {
-                Console.WriteLine(result.Error);
-            }
+            cloudCreator.Create().OnFail(HandleErrorMessage);
         }
 
         static Config LoadConfig()
         {
             return Result.Of(
                 () => new Config("in2.txt", "out.jpeg", "Times New Roman", new Size(10, 10), 10))
-                .OnFail(HandleMessage).Value;
+                .OnFail(HandleErrorMessage).Value;
         }
 
-        static void HandleMessage(string message)
+        static void HandleErrorMessage(string message)
         {
             Console.WriteLine(message);
             Environment.Exit(1);
