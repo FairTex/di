@@ -5,7 +5,6 @@ using FractalPainting.App.Actions;
 using FractalPainting.Infrastructure.Common;
 using FractalPainting.Infrastructure.Injection;
 using FractalPainting.Infrastructure.UiActions;
-using Ninject;
 
 namespace FractalPainting.App
 {

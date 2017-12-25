@@ -7,7 +7,6 @@ namespace TagsCloud.Tests
 {
     public class CircularCloudLayouter_Should
     {
-        private int index = 0;
         private readonly Point[] points = { new Point(0, 0) };
         private Mock<ISpiral> spiral;
         private Config config;
@@ -16,8 +15,8 @@ namespace TagsCloud.Tests
         {
             spiral = new Mock<ISpiral>();
             spiral.Setup(s => s.GetNextPoint())
-                .Returns(() => points[index++]);
-            config = new Config("", "", "", new Size(100, 100), 5);
+                .Returns(() => points[0]);
+            config = new Config("", "", "Arial", new Size(100, 100), 5);
         }
 
 
@@ -35,8 +34,8 @@ namespace TagsCloud.Tests
         {
             var layouter = new CircularCloudLayouter(config, spiral.Object);
             var rect = layouter.PutNextRectangle(new Size(10, 10));
-
-            rect.ShouldBeEquivalentTo(new Rectangle(-5, -5, 10, 10));
+            
+            rect.Value.ShouldBeEquivalentTo(new Rectangle(-5, -5, 10, 10));
         }
     }
 }

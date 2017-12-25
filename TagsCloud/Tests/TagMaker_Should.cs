@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -23,7 +19,7 @@ namespace TagsCloud.Tests
             var tagMaker = new TagMaker(config, layouter.Object);
             var answer = new Dictionary<string, Rectangle> {{"s", new Rectangle(0, 0, 10, 10)}};
 
-            tagMaker.Make(new[]{"s", "s", "s"}).ShouldBeEquivalentTo(answer);
+            tagMaker.Make(new[]{"s", "s", "s"}).Value.ShouldBeEquivalentTo(answer);
 
         }
     }
