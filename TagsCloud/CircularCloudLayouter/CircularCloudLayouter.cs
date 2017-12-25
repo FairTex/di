@@ -29,7 +29,7 @@ namespace TagsCloud
                     if (Rectangles.Count > 0)
                         rectangle = TryShiftToCenter(rectangle);
 
-                    if (!rectangle.IntersectsWith(config.Canvas))
+                    if (!config.Canvas.Contains(rectangle))
                     {
                         return Result.Fail<Rectangle>("Облако тегов не влезло на изображение данного размера");
                     }
@@ -61,30 +61,30 @@ namespace TagsCloud
             return value ? 1 : -1;
         }
 
-        private Rectangle ShiftWhilePossible(Rectangle r, Point direction)
+        private Rectangle ShiftWhilePossible(Rectangle rectangle, Point direction)
         {
             while (true)
             {
-                var newPoint = new Point(r.X + direction.X, r.Y + direction.Y);
+                var newPoint = new Point(rectangle.X + direction.X, rectangle.Y + direction.Y);
 
-                var newRectangle = new Rectangle(newPoint, r.Size);
+                var newRectangle = new Rectangle(newPoint, rectangle.Size);
                 if (!DoesIntersect(newRectangle))
                 {
-                    r = newRectangle;
+                    rectangle = newRectangle;
                 }
                 else
                 {
-                    return r;
+                    return rectangle;
                 }
 
                 if (NearTheCenter(newRectangle, direction))
-                    return r;
+                    return rectangle;
             }
         }
 
-        private bool NearTheCenter(Rectangle r, Point direction)
+        private bool NearTheCenter(Rectangle rectangle, Point direction)
         {
-            return (r.X == config.Center.X && direction.Y == 0) || (r.Y == config.Center.Y && direction.X == 0);
+            return (rectangle.X == config.Center.X && direction.Y == 0) || (rectangle.Y == config.Center.Y && direction.X == 0);
         }
 
         private Point GetCenter(Rectangle rectangle)
@@ -92,9 +92,9 @@ namespace TagsCloud
             return new Point(rectangle.X + rectangle.Width / 2, rectangle.Y + rectangle.Height / 2);
         }
 
-        private Point Shift(Point p, Size s)
+        private Point Shift(Point point, Size size)
         {
-            return new Point(p.X - s.Width / 2, p.Y - s.Height / 2);
+            return new Point(point.X - size.Width / 2, point.Y - size.Height / 2);
         }
 
 
