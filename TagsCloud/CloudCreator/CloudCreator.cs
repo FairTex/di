@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TagsCloud
+﻿namespace TagsCloud
 {
     public class CloudCreator : ICloudCreator
     {
@@ -25,7 +19,7 @@ namespace TagsCloud
 
         public void Create()
         {
-            var words = WordReader.read(config.InputFileName);
+            var words = WordReader.Read(config.InputFileName);
             var handledWords = WordHandler.Handle(words);
             var rectangles = TagMaker.Make(handledWords);
 
