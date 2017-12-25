@@ -64,6 +64,11 @@ namespace TagsCloud
             }
         }
 
+        public static Result<T> Of<T>(Func<Result<T>> f, string error = null)
+        {
+            return f();
+        }
+
         public static Result<None> OfAction(Action f, string error = null)
         {
             try

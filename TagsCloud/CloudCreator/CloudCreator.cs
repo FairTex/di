@@ -24,18 +24,12 @@ namespace TagsCloud
             TagMaker = tagMaker;
         }
 
-        public void Create()
+        public Result<None> Create()
         {
-            var result = WordReader.read(config.InputFileName);
-            if (!result.IsSuccess)
-            {
-                throw new FileLoadException(result.Error);
-            }
-
-            var handledWords = WordHandler.Handle(result.Value);
-            var rectangles = TagMaker.Make(handledWords);
-
-            Drawer.Draw(rectangles);
+            return Result.Of(() => WordReader.Read(config.InputFileName))
+                .Then(words => WordHandler.Handle(words))
+                .Then(handledWords => TagMaker.Make(handledWords))
+                .Then(rectangles => Drawer.Draw(rectangles));
         }
     }
 }

@@ -16,19 +16,15 @@ namespace TagsCloud
             this.brushGenerator = brushGenerator;
         }
         
-        public void Draw(Dictionary<string, Result<Rectangle>> cloud)
+        public void Draw(Dictionary<string, Rectangle> cloud)
         {
             var bitmap = new Bitmap(config.ImageSize.Width, config.ImageSize.Height);
             var g = Graphics.FromImage(bitmap);
 
             foreach (var tag in cloud)
             {
-                if (!tag.Value.IsSuccess)
-                {
-                    throw new Exception(tag.Value.Error);
-                }
-                g.DrawString(tag.Key, new Font(config.TagFontName, tag.Value.Value.Height / 2), brushGenerator.GetBrush(),
-                    tag.Value.Value.Location);
+                g.DrawString(tag.Key, new Font(config.TagFontName, tag.Value.Height / 2), brushGenerator.GetBrush(),
+                    tag.Value.Location);
             }
 
             bitmap.Save(config.OutputFileName, ImageFormat.Jpeg);

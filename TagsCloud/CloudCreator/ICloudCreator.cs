@@ -8,6 +8,6 @@ namespace TagsCloud
 {
     public interface ICloudCreator
     {
-        void Create();
+        Result<None> Create();
     }
 }

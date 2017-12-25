@@ -13,27 +13,32 @@ namespace TagsCloud
     {
         static void Main(string[] args)
         {
+            var configLoadingResult = LoadConfig();
+            if (!configLoadingResult.IsSuccess)
+            {
+                Console.WriteLine(configLoadingResult.Error);
+                return;
+            }
+
             var container = new ContainerBuilder();
             container.RegisterAssemblyTypes(typeof(Program).Assembly).AsImplementedInterfaces();
             container.RegisterType<CloudCreator>().AsSelf();
-            container.Register(_ => LoadConfig())
+            container.Register(_ => configLoadingResult.Value)
                 .SingleInstance();
             var build = container.Build();
             var cloudCreator = build.Resolve<CloudCreator>();
-            cloudCreator.Create();
+
+            var result = cloudCreator.Create();
+            if (!result.IsSuccess)
+            {
+                Console.WriteLine(result.Error);
+            }
         }
 
-        static Config LoadConfig()
+        static Result<Config> LoadConfig()
         {
-            Config config;
-            try
-            {
-                config = new Config("in3.txt", "out.jpeg", "Times New Roma", new Size(1024, 1024), 10);
-            } catch (Exception e)
-            {
-                throw new Exception("При загрузке конфига произошла ошибка " + e.Message);
-            }
-            return config;
+            return Result.Of(
+                () => new Config("in2.txt", "out.jpeg", "Times New Roman", new Size(10, 10), 10));
         }
     }
 }

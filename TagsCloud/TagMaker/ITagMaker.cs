@@ -9,6 +9,6 @@ namespace TagsCloud
 {
     public interface ITagMaker
     {
-        Dictionary<string, Result<Rectangle>> Make(IEnumerable<string> words);
+        Result<Dictionary<string, Rectangle>> Make(IEnumerable<string> words);
     }
 }

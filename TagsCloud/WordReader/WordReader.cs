@@ -6,7 +6,7 @@ namespace TagsCloud
 {
     public class WordReader : IWordReader
     {
-        public Result<IEnumerable<string>> read(string filename)
+        public Result<IEnumerable<string>> Read(string filename)
         {
             return Result.Of(() => File.ReadAllLines(filename))
                 .Then(lines => lines
