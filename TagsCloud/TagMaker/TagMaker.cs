@@ -8,38 +8,37 @@ namespace TagsCloud
     public class TagMaker : ITagMaker
     {
         private readonly ICircularCloudLayouter layouter;
-        private int maxSize = 80;
-        private int minSize = 20;
-        private Config Config;
+        private const int MaxSize = 80;
+        private const int MinSize = 20;
+        private readonly Config config;
 
         public TagMaker(Config config, ICircularCloudLayouter layouter)
         {
             this.layouter = layouter;
-            Config = config;
+            this.config = config;
         }
 
-        public Dictionary<string, Rectangle> Make(string[] words)
+        public Dictionary<string, Rectangle> Make(IEnumerable<string> words)
         {
-            words = words.Take(Config.Count).ToArray();
-            Dictionary<string, int> wordsFrequencies = CalculateFrequency(words);
+            var wordsFrequencies = CalculateFrequency(words);
             return wordsFrequencies.ToDictionary(word => word.Key, word =>
             {
                 var tagSize = (int)((double)word.Value / wordsFrequencies.Values.Max()
-                                    * (maxSize - minSize) + minSize);
+                                    * (MaxSize - MinSize) + MinSize);
                 var rectangleSize = TextRenderer.MeasureText(word.Key,
-                    new Font(new FontFamily(Config.TagFontName), tagSize,
+                    new Font(new FontFamily(config.TagFontName), tagSize,
                         FontStyle.Regular, GraphicsUnit.Pixel));
 
                 return layouter.PutNextRectangle(rectangleSize);
             });
         }
 
-        private Dictionary<string, int> CalculateFrequency(string[] words)
+        private Dictionary<string, int> CalculateFrequency(IEnumerable<string> words)
         {
             return words
                 .GroupBy(word => word)
                 .OrderByDescending(wordList => wordList.Count())
-                .Take(words.Length)
+                .Take(config.Count)
                 .ToDictionary(word => word.Key, wordList => wordList.Count());
         }
     }

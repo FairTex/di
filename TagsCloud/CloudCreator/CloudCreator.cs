@@ -2,28 +2,27 @@
 {
     public class CloudCreator : ICloudCreator
     {
-        private IWordReader WordReader;
+        private readonly IWordReader wordReader;
         private readonly Config config;
-        private IWordHandler WordHandler;
-        private IDrawer Drawer;
-        private ITagMaker TagMaker;
+        private readonly ITextFilter textFilter;
+        private readonly IDrawer drawer;
+        private readonly ITagMaker tagMaker;
 
-        public CloudCreator(Config config, IWordReader reader, IWordHandler handler, IDrawer drawer, ITagMaker tagMaker)
+        public CloudCreator(Config config, IWordReader wordReader, ITextFilter textFilter, IDrawer drawer, ITagMaker tagMaker)
         {
             this.config = config;
-            WordHandler = handler;
-            WordReader = reader;
-            Drawer = drawer;
-            TagMaker = tagMaker;
+            this.textFilter = textFilter;
+            this.wordReader = wordReader;
+            this.drawer = drawer;
+            this.tagMaker = tagMaker;
         }
 
         public void Create()
         {
-            var words = WordReader.Read(config.InputFileName);
-            var handledWords = WordHandler.Handle(words);
-            var rectangles = TagMaker.Make(handledWords);
-
-            Drawer.Draw(rectangles);
+            var words = wordReader.Read(config.InputFileName);
+            var handledWords = textFilter.ExcludeWords(words);
+            var rectangles = tagMaker.Make(handledWords);
+            drawer.Draw(rectangles);
         }
     }
 }

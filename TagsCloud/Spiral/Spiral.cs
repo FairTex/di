@@ -9,13 +9,13 @@ namespace TagsCloud
         private Point Current { get; set; }
 
         private int PathLength { get; set; } = 1;
-        private int CurrentLength { get; set; } = 0;
+        private int CurrentLength { get; set; }
         private bool IsFirst { get; set; } = true;
 
-        private Point[] Directions { get; set; }
-        private int DirectionIndex { get; set; } = 0;
+        private Point[] Directions { get; }
+        private int DirectionIndex { get; set; }
 
-        private bool isFirstRequest { get; set; } = true;
+        private bool IsFirstRequest { get; set; } = true;
 
         public Spiral(Config config, int scale = 5)
         {
@@ -47,9 +47,9 @@ namespace TagsCloud
 
         public Point GetNextPoint()
         {
-            if (isFirstRequest)
+            if (IsFirstRequest)
             {
-                isFirstRequest = false;
+                IsFirstRequest = false;
                 return Current;
             }
 

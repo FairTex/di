@@ -4,7 +4,7 @@ namespace TagsCloud
 {
     public class BrushGenerator : IBrushGenerator
     {
-        private int BrushIndex { get; set; } = 0;
+        private int BrushIndex { get; set; }
         private Brush[] BrushesList { get; }
 
         public BrushGenerator()

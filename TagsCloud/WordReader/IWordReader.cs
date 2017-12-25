@@ -1,7 +1,9 @@
-﻿namespace TagsCloud
+﻿using System.Collections.Generic;
+
+namespace TagsCloud
 {
     public interface IWordReader
     {
-        string[] Read(string filename);
+        IEnumerable<string> Read(string filename);
     }
 }

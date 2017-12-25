@@ -6,9 +6,9 @@ namespace TagsCloud
 {
     public class CircularCloudLayouter : ICircularCloudLayouter
     {
-        private Point Center { get; set; }
-        private ISpiral Spiral { get; set; }
-        private List<Rectangle> Rectangles { get; set; }
+        private Point Center { get; }
+        private ISpiral Spiral { get; }
+        private List<Rectangle> Rectangles { get; }
 
         public CircularCloudLayouter(Config config, ISpiral spiral)
         {

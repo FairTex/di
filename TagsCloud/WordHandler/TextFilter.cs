@@ -11,8 +11,8 @@ namespace TagsCloud
         {
             WordFilters = wordFilters;
         }
-
-        public IEnumerable<string> ExludeWords(IEnumerable<string> words)
+        
+        public IEnumerable<string> ExcludeWords(IEnumerable<string> words)
         {
             return WordFilters.Aggregate(words, (word, handler) => handler.ExcludeWords(word));
         }

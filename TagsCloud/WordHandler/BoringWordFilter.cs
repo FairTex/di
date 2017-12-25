@@ -1,13 +1,13 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace TagsCloud
 {
-    public class BoringWordsExcluder : IHandler
+    public class BoringWordFilter : IWordFilter
     {
-        public string[] Handle(string[] words)
+        public IEnumerable<string> ExcludeWords(IEnumerable<string> words)
         {
-            return words.Where(word => word.Length > 3).ToArray();
+            return words.Where(word => word.Length > 3);
         }
     }
 }

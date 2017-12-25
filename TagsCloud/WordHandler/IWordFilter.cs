@@ -1,7 +1,9 @@
-﻿namespace TagsCloud
+﻿using System.Collections.Generic;
+
+namespace TagsCloud
 {
-    public interface IHandler
+    public interface IWordFilter
     {
-        string[] Handle(string[] words);
+        IEnumerable<string> ExcludeWords(IEnumerable<string> words);
     }
 }
